@@ -3,18 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>S-Corp Tax Savings Calculator</title>
+    <title>LLC to S-Corp Calculator | 2026 S-Corp Tax Savings Calculator</title>
+    <meta name="application-name" content="LLC to S-Corp Calculator" />
+    <meta name="apple-mobile-web-app-title" content="LLC to S-Corp Calculator" />
+    <meta name="robots" content="index, follow" />
     <meta
       id="metaDescription"
       name="description"
-      content="Estimate your 2026 self-employment tax savings by electing S-Corp taxation."
+      content="Free 2026 LLC to S-Corp tax savings calculator with instant AI optimization guidance, 50-state rules, reasonable salary modeling, and no registration required."
     />
-    <link id="canonicalUrl" rel="canonical" href="" />
-    <meta id="ogTitle" property="og:title" content="S-Corp Tax Savings Calculator" />
+    <link id="canonicalUrl" rel="canonical" href="https://llctoscorpcalc-com.vercel.app/s-corp-calculator/california" />
+    <meta property="og:site_name" content="LLC to S-Corp Calculator" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta id="ogTitle" property="og:title" content="LLC to S-Corp Calculator | 2026 S-Corp Tax Savings Calculator" />
     <meta
       id="ogDescription"
       property="og:description"
-      content="Estimate your 2026 self-employment tax savings by electing S-Corp taxation."
+      content="Free 2026 LLC to S-Corp tax savings calculator with instant AI optimization guidance, 50-state rules, reasonable salary modeling, and no registration required."
+    />
+    <meta id="ogUrl" property="og:url" content="https://llctoscorpcalc-com.vercel.app/s-corp-calculator/california" />
+    <meta name="twitter:card" content="summary" />
+    <meta id="twitterTitle" name="twitter:title" content="LLC to S-Corp Calculator | 2026 S-Corp Tax Savings Calculator" />
+    <meta
+      id="twitterDescription"
+      name="twitter:description"
+      content="Free 2026 LLC to S-Corp tax savings calculator with instant AI optimization guidance, 50-state rules, reasonable salary modeling, and no registration required."
     />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -511,6 +525,8 @@
       const MAX_INCOME = 3000000;
       const MIN_SALARY = 10000;
       const MAX_SALARY = 300000;
+      const SITE_NAME = "LLC to S-Corp Calculator";
+      const SITE_URL = "https://llctoscorpcalc-com.vercel.app";
       const DEFAULT_STATE_SLUG = "california";
       const ROUTE_PREFIX = "/s-corp-calculator/";
       const BIZEE_AFFILIATE_BASE = "https://www.bizee.com/";
@@ -886,6 +902,9 @@
         canonicalUrl: document.getElementById("canonicalUrl"),
         ogTitle: document.getElementById("ogTitle"),
         ogDescription: document.getElementById("ogDescription"),
+        ogUrl: document.getElementById("ogUrl"),
+        twitterTitle: document.getElementById("twitterTitle"),
+        twitterDescription: document.getElementById("twitterDescription"),
         incomeRange: document.getElementById("incomeRange"),
         incomeInput: document.getElementById("incomeInput"),
         salaryRange: document.getElementById("salaryRange"),
@@ -968,6 +987,10 @@
         return match ? match[0] : DEFAULT_STATE_SLUG;
       }
 
+      function getCanonicalPageUrl(stateRule) {
+        return `${SITE_URL}${ROUTE_PREFIX}${getSlugForStateRule(stateRule)}`;
+      }
+
       function getStateTaxRuleDescription(stateRule) {
         if (stateRule.ruleLabel) {
           return stateRule.ruleLabel;
@@ -990,15 +1013,19 @@
 
       function renderPageMetadata(stateRule) {
         const title = `${stateRule.name} S-Corp Tax Savings Calculator (Updated for 2026)`;
-        const description = `Free instant AI S-Corp tax savings calculator for ${stateRule.name}. No registration required. Compare sole proprietor self-employment tax against S-Corp payroll tax, reasonable salary, and state-level costs.`;
+        const description = `Use ${SITE_NAME} to estimate 2026 S-Corp tax savings in ${stateRule.name}. Free instant AI guidance, no registration required, with federal self-employment tax, reasonable salary, and state-level S-Corp cost modeling.`;
+        const canonicalUrl = getCanonicalPageUrl(stateRule);
 
         document.title = title;
         elements.pageTitle.textContent = title;
         elements.heroDescription.textContent = description;
         elements.metaDescription.setAttribute("content", description);
-        elements.canonicalUrl.setAttribute("href", `${window.location.origin}${ROUTE_PREFIX}${getSlugForStateRule(stateRule)}`);
+        elements.canonicalUrl.setAttribute("href", canonicalUrl);
         elements.ogTitle.setAttribute("content", title);
         elements.ogDescription.setAttribute("content", description);
+        elements.ogUrl.setAttribute("content", canonicalUrl);
+        elements.twitterTitle.setAttribute("content", title);
+        elements.twitterDescription.setAttribute("content", description);
       }
 
       function renderBlueprint(stateRule, result, income, salary) {
