@@ -1,0 +1,1432 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>S-Corp Tax Savings Calculator</title>
+    <meta
+      id="metaDescription"
+      name="description"
+      content="Estimate your 2026 self-employment tax savings by electing S-Corp taxation."
+    />
+    <link id="canonicalUrl" rel="canonical" href="" />
+    <meta id="ogTitle" property="og:title" content="S-Corp Tax Savings Calculator" />
+    <meta
+      id="ogDescription"
+      property="og:description"
+      content="Estimate your 2026 self-employment tax savings by electing S-Corp taxation."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: "#10201a",
+              leaf: "#19a974",
+              mint: "#dffaf0",
+              cloud: "#f7fbf8",
+              line: "#dbe7df",
+            },
+            boxShadow: {
+              soft: "0 18px 55px rgba(16, 32, 26, 0.10)",
+              lift: "0 18px 38px rgba(25, 169, 116, 0.22)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --range-progress: 50%;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      input[type="range"] {
+        appearance: none;
+        width: 100%;
+        height: 0.55rem;
+        border-radius: 999px;
+        background:
+          linear-gradient(90deg, #19a974 var(--range-progress), #dfe9e3 var(--range-progress));
+        outline: none;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        appearance: none;
+        width: 1.35rem;
+        height: 1.35rem;
+        border: 4px solid #ffffff;
+        border-radius: 999px;
+        background: #19a974;
+        box-shadow: 0 8px 18px rgba(25, 169, 116, 0.35);
+        cursor: pointer;
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        width: 1.35rem;
+        height: 1.35rem;
+        border: 4px solid #ffffff;
+        border-radius: 999px;
+        background: #19a974;
+        box-shadow: 0 8px 18px rgba(25, 169, 116, 0.35);
+        cursor: pointer;
+      }
+
+      .money-pulse {
+        animation: moneyPulse 420ms ease-out;
+      }
+
+      .gold-pulse {
+        animation: goldPulse 1.8s ease-in-out infinite;
+      }
+
+      .report-open {
+        animation: reportOpen 520ms ease-out both;
+      }
+
+      @keyframes moneyPulse {
+        0% {
+          transform: translateY(0) scale(1);
+        }
+        38% {
+          transform: translateY(-5px) scale(1.035);
+        }
+        100% {
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes goldPulse {
+        0%,
+        100% {
+          box-shadow: 0 18px 38px rgba(245, 158, 11, 0.22);
+          transform: translateY(0);
+        }
+        50% {
+          box-shadow: 0 24px 52px rgba(245, 158, 11, 0.36);
+          transform: translateY(-2px);
+        }
+      }
+
+      @keyframes reportOpen {
+        0% {
+          opacity: 0;
+          transform: translateY(-16px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media print {
+        @page {
+          size: A4;
+          margin: 0.55in;
+        }
+
+        body {
+          background: #ffffff !important;
+          color: #10201a !important;
+        }
+
+        body * {
+          visibility: hidden !important;
+        }
+
+        #blueprintPrintArea,
+        #blueprintPrintArea * {
+          visibility: visible !important;
+        }
+
+        #blueprintPrintArea {
+          position: absolute !important;
+          inset: 0 auto auto 0 !important;
+          width: 100% !important;
+          max-width: none !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          box-shadow: none !important;
+          border: 0 !important;
+        }
+
+        .no-print {
+          display: none !important;
+        }
+
+        .print-break-inside {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-cloud text-ink antialiased">
+    <main class="overflow-hidden">
+      <section class="relative border-b border-line bg-white">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(25,169,116,0.16),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.96),rgba(231,249,241,0.76))]"></div>
+        <div class="relative mx-auto max-w-7xl px-5 py-10 sm:px-6 lg:px-8 lg:py-14">
+          <nav class="mb-12 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3" aria-label="S-Corp Tax Savings Calculator home">
+              <span class="grid h-9 w-9 place-items-center rounded-lg bg-ink text-sm font-black text-white">S</span>
+              <span class="text-sm font-semibold tracking-wide text-slate-700">S-Corp Savings</span>
+            </a>
+            <a
+              href="#ai-blueprint-report"
+              class="rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-emerald-200"
+            >
+              Free AI Blueprint
+            </a>
+          </nav>
+
+          <div class="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+            <div>
+              <p class="mb-4 inline-flex rounded-full border border-emerald-200 bg-white/80 px-4 py-2 text-sm font-semibold text-emerald-700 shadow-sm">
+                100% free, no registration required, instant AI generation
+              </p>
+              <div class="max-w-4xl rounded-lg border border-emerald-200 bg-gradient-to-r from-emerald-50 to-sky-50 p-5 shadow-sm sm:p-6">
+                <div class="flex flex-col gap-4 sm:flex-row">
+                  <div class="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-white text-2xl shadow-sm" aria-hidden="true">
+                    &#127482;&#127480;
+                  </div>
+                  <div>
+                    <h1 class="text-3xl font-extrabold leading-tight tracking-normal text-ink sm:text-4xl">
+                      &#127482;&#127480; Complete 50-State S-Corp Tax Savings Calculator
+                    </h1>
+                    <p class="mt-3 text-sm font-semibold leading-6 text-slate-600 sm:text-base">
+                      This interactive tool is updated for 2026 and customized for all 50 US states. As a core part of our <strong class="font-black text-ink">100% Self-Service S-Corp Toolkit</strong>, it empowers self-employed professionals to instantly unlock local tax optimization. To seamlessly automate your corporate structuring and employee payroll, this toolkit guides you through industry-leading, self-service platforms like <strong class="font-black text-emerald-700">Bizee</strong> and <strong class="font-black text-sky-700">Gusto</strong>. Simply select your state from the 'State' dropdown menu below to get started.
+                    </p>
+                    <div class="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-black text-emerald-700 shadow-sm">
+                      <span>Choose your state below</span>
+                      <span class="animate-bounce text-lg leading-none" aria-hidden="true">&#8595;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 id="pageTitle" class="mt-6 max-w-3xl text-xl font-bold leading-8 tracking-normal text-slate-700 sm:text-2xl">
+                California S-Corp Tax Savings Calculator (Updated for 2026)
+              </h2>
+              <p id="heroDescription" class="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+                Instantly compare a sole proprietorship or single-member LLC against an S-Corp election using 2026 federal tax rules and state-specific S-Corp costs. No signup, no waiting, no sales call.
+              </p>
+            </div>
+
+            <div class="rounded-lg border border-emerald-200 bg-white p-6 shadow-soft lg:p-7">
+              <p id="heroMetricLabel" class="text-sm font-semibold uppercase tracking-wide text-slate-500">Estimated annual savings</p>
+              <div
+                id="heroSavings"
+                class="mt-3 text-5xl font-black tracking-normal text-emerald-600 sm:text-6xl"
+                aria-live="polite"
+              >
+                $0
+              </div>
+              <div class="mt-5 h-3 overflow-hidden rounded-full bg-emerald-100">
+                <div id="heroBar" class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500" style="width: 0%"></div>
+              </div>
+              <p class="mt-4 text-sm leading-6 text-slate-600">
+                100% free estimate. Your AI tax optimization blueprint is generated instantly in your browser.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-auto grid max-w-7xl gap-6 px-5 py-8 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:px-8 lg:py-12">
+        <aside class="rounded-lg border border-line bg-white p-5 shadow-soft sm:p-6 lg:sticky lg:top-6 lg:self-start">
+          <div class="mb-6 flex items-start justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-black tracking-normal text-ink">Your inputs</h2>
+              <p class="mt-1 text-sm leading-6 text-slate-600">Adjust income, salary, and state costs to model your estimate.</p>
+            </div>
+            <span class="rounded-lg bg-mint px-3 py-1 text-sm font-bold text-emerald-700">2026</span>
+          </div>
+
+          <div class="space-y-7">
+            <div>
+              <div class="mb-3 flex items-center justify-between gap-4">
+                <label for="incomeRange" class="text-sm font-bold text-slate-700">Annual Net Income</label>
+                <div class="relative w-40">
+                  <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">$</span>
+                  <input
+                    id="incomeInput"
+                    type="number"
+                    min="20000"
+                    max="3000000"
+                    step="1000"
+                    class="w-full rounded-lg border border-line bg-white py-2 pl-7 pr-3 text-right text-sm font-bold text-ink outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100"
+                  />
+                </div>
+              </div>
+              <input id="incomeRange" type="range" min="20000" max="3000000" step="1000" aria-label="Annual Net Income" />
+              <div class="mt-2 flex justify-between text-xs font-semibold text-slate-400">
+                <span>$20k</span>
+                <span>$3M</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="mb-3 flex items-center justify-between gap-4">
+                <label for="salaryRange" class="text-sm font-bold text-slate-700">Proposed W-2 Salary</label>
+                <div class="relative w-40">
+                  <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">$</span>
+                  <input
+                    id="salaryInput"
+                    type="number"
+                    min="10000"
+                    max="300000"
+                    step="1000"
+                    class="w-full rounded-lg border border-line bg-white py-2 pl-7 pr-3 text-right text-sm font-bold text-ink outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100"
+                  />
+                </div>
+              </div>
+              <input id="salaryRange" type="range" min="10000" max="300000" step="1000" aria-label="Proposed W-2 Salary" />
+              <div class="mt-2 flex justify-between text-xs font-semibold text-slate-400">
+                <span>$10k</span>
+                <span id="salaryMaxLabel">$300k</span>
+              </div>
+              <p id="salaryWarning" class="mt-3 hidden rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800">
+                Salary was capped at annual net income.
+              </p>
+            </div>
+
+            <div>
+              <label for="stateSelect" class="mb-3 block text-sm font-bold text-slate-700">State</label>
+              <select
+                id="stateSelect"
+                class="w-full rounded-lg border border-line bg-white px-4 py-3 text-sm font-bold text-ink outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100"
+              ></select>
+              <div class="mt-3 flex items-center justify-between rounded-lg border border-line bg-slate-50 px-4 py-3">
+                <span class="text-sm font-semibold text-slate-600">Estimated state tax and compliance cost</span>
+                <span id="stateCost" class="text-base font-black text-ink">$0</span>
+              </div>
+              <p id="stateNotice" class="mt-3 hidden rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-xs font-semibold leading-5 text-sky-800"></p>
+            </div>
+          </div>
+        </aside>
+
+        <section class="space-y-6">
+          <div class="rounded-lg border border-line bg-white p-5 shadow-soft sm:p-6">
+            <div class="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <div>
+                <h2 class="text-xl font-black tracking-normal text-ink">Tax burden comparison</h2>
+                <p class="mt-1 text-sm leading-6 text-slate-600">Federal self-employment tax versus S-Corp payroll tax plus state compliance cost.</p>
+              </div>
+              <span class="rounded-lg bg-slate-100 px-3 py-1 text-sm font-bold text-slate-600">Social Security cap: $184,500</span>
+            </div>
+            <div class="relative h-72 sm:h-80">
+              <canvas id="taxChart" aria-label="Sole Proprietor versus S-Corp tax comparison chart"></canvas>
+            </div>
+          </div>
+
+          <div class="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
+            <div id="savingsPanel" class="rounded-lg border border-emerald-200 bg-gradient-to-br from-emerald-600 to-teal-500 p-6 text-white shadow-lift">
+              <p id="savingsLabel" class="text-sm font-bold uppercase tracking-wide text-emerald-50">You could save</p>
+              <div id="savingsCard" class="mt-3 text-5xl font-black tracking-normal">$0</div>
+              <p id="savingsSubtext" class="mt-3 text-base font-semibold text-emerald-50">per year after state tax and compliance cost</p>
+              <p id="negativeSavingsWarning" class="mt-5 hidden rounded-lg border border-white/40 bg-white/20 px-4 py-3 text-sm font-bold leading-6 text-white">
+                At this income level, switching to an S-Corp may not save you money. Review the instant blueprint below before changing your tax status.
+              </p>
+              <button
+                id="unlockReportButton"
+                type="button"
+                class="gold-pulse mt-6 w-full rounded-lg bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 px-5 py-4 text-sm font-black text-ink shadow-lift transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-amber-200"
+              >
+                &#10024; View Free AI Tax Optimization Blueprint (Instant)
+              </button>
+            </div>
+
+            <div class="rounded-lg border border-line bg-white p-5 shadow-soft sm:p-6">
+              <h3 class="text-lg font-black tracking-normal text-ink">Breakdown</h3>
+              <dl class="mt-5 space-y-4">
+                <div class="flex items-center justify-between gap-4 border-b border-line pb-3">
+                  <dt class="text-sm font-semibold text-slate-600">Sole Proprietor SE Tax</dt>
+                  <dd id="soleTax" class="text-base font-black text-ink">$0</dd>
+                </div>
+                <div class="flex items-center justify-between gap-4 border-b border-line pb-3">
+                  <dt class="text-sm font-semibold text-slate-600">S-Corp Payroll Tax</dt>
+                  <dd id="sCorpPayrollTax" class="text-base font-black text-ink">$0</dd>
+                </div>
+                <div class="flex items-center justify-between gap-4 border-b border-line pb-3">
+                  <dt class="text-sm font-semibold text-slate-600">Distributions Not Subject to SE Tax</dt>
+                  <dd id="distributions" class="text-base font-black text-ink">$0</dd>
+                </div>
+                <div class="flex items-center justify-between gap-4">
+                  <dt class="text-sm font-semibold text-slate-600">State Tax and Compliance Cost</dt>
+                  <dd id="breakdownStateCost" class="text-base font-black text-ink">$0</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          <div id="affiliateCta" class="hidden rounded-lg border border-emerald-200 bg-white p-5 shadow-soft sm:p-6">
+            <div class="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <div>
+                <p class="text-sm font-bold uppercase tracking-wide text-emerald-600">Recommended next step</p>
+                <h2 class="mt-2 text-xl font-black tracking-normal text-ink">Turn estimated savings into a compliant setup</h2>
+              </div>
+              <span id="ctaSavingsBadge" class="rounded-lg bg-mint px-3 py-2 text-sm font-black text-emerald-700">$0+ estimated savings</span>
+            </div>
+            <div class="grid gap-3 md:grid-cols-2">
+              <a
+                id="bizeeCta"
+                href="#"
+                target="_blank"
+                rel="noopener sponsored"
+                class="rounded-lg bg-gradient-to-r from-emerald-600 to-teal-500 px-5 py-4 text-center text-sm font-black text-white shadow-lift transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-emerald-200"
+              >
+                Form Your S-Corp Automatically via Bizee ($0 Base Fee)
+              </a>
+              <a
+                id="gustoCta"
+                href="#"
+                target="_blank"
+                rel="noopener sponsored"
+                class="rounded-lg border border-line bg-ink px-5 py-4 text-center text-sm font-black text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200"
+              >
+                Set Up Compliant W-2 Payroll via Gusto (Get 3 Months Free)
+              </a>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section id="ai-blueprint-report" class="hidden border-t border-line bg-white">
+        <div id="blueprintPrintArea" class="mx-auto max-w-4xl px-5 py-10 sm:px-6 lg:px-8">
+          <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+            <div>
+              <p class="text-sm font-bold uppercase tracking-wide text-amber-600">Instant AI-generated education report</p>
+              <h2 id="blueprintTitle" class="mt-3 text-3xl font-black tracking-normal text-ink">AI Tax Optimization Blueprint</h2>
+              <p id="blueprintSubtitle" class="mt-3 text-sm font-semibold leading-6 text-slate-600">100% free, no registration required, instant AI generation.</p>
+            </div>
+            <button id="printBlueprintTop" type="button" class="no-print rounded-lg bg-ink px-4 py-3 text-sm font-black text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200">
+              &#128229; Download Blueprint as PDF
+            </button>
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-3">
+            <div class="print-break-inside rounded-lg border border-line bg-slate-50 p-4">
+              <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Estimated annual savings</p>
+              <p id="blueprintSavings" class="mt-2 text-2xl font-black text-emerald-600">$0</p>
+            </div>
+            <div class="print-break-inside rounded-lg border border-line bg-slate-50 p-4">
+              <p class="text-xs font-bold uppercase tracking-wide text-slate-500">State cost model</p>
+              <p id="blueprintStateCost" class="mt-2 text-2xl font-black text-ink">$0</p>
+            </div>
+            <div class="print-break-inside rounded-lg border border-line bg-slate-50 p-4">
+              <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Suggested salary band</p>
+              <p id="blueprintSalaryBand" class="mt-2 text-2xl font-black text-ink">$0 - $0</p>
+            </div>
+          </div>
+
+          <article class="mt-8 space-y-7 text-base leading-8 text-slate-700">
+            <section class="print-break-inside">
+              <h3 id="blueprintSeoTitle" class="text-2xl font-black tracking-normal text-ink">Is an S-Corp Worth It?</h3>
+              <p id="blueprintParagraphOne" class="mt-3"></p>
+              <p id="blueprintParagraphTwo" class="mt-3"></p>
+            </section>
+
+            <section class="print-break-inside">
+              <h3 class="text-xl font-black tracking-normal text-ink">AI Optimization Summary</h3>
+              <p id="blueprintSummary" class="mt-3"></p>
+            </section>
+
+            <section class="print-break-inside">
+              <h3 class="text-xl font-black tracking-normal text-ink">State-Specific Rule Notes</h3>
+              <p id="blueprintStateRules" class="mt-3"></p>
+            </section>
+
+            <section class="print-break-inside">
+              <h3 class="text-xl font-black tracking-normal text-ink">Self-Service Action Plan</h3>
+              <ol id="blueprintActionPlan" class="mt-3 list-decimal space-y-2 pl-5"></ol>
+            </section>
+          </article>
+
+          <div class="no-print mt-8 flex flex-col gap-3 sm:flex-row">
+            <button id="printBlueprintBottom" type="button" class="rounded-lg bg-ink px-5 py-3 text-sm font-black text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200">
+              &#128229; Download Blueprint as PDF
+            </button>
+            <a id="bottomBizeeCta" href="#" target="_blank" rel="noopener sponsored" class="rounded-lg bg-gradient-to-r from-emerald-600 to-teal-500 px-5 py-3 text-center text-sm font-black text-white shadow-lift transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-emerald-200">
+              Form Your S-Corp Automatically via Bizee ($0 Base Fee)
+            </a>
+            <a id="bottomGustoCta" href="#" target="_blank" rel="noopener sponsored" class="rounded-lg border border-line bg-white px-5 py-3 text-center text-sm font-black text-ink shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-soft focus:outline-none focus:ring-4 focus:ring-emerald-100">
+              Set Up Compliant W-2 Payroll via Gusto (Get 3 Months Free)
+            </a>
+          </div>
+
+          <p class="mt-8 text-xs leading-5 text-slate-500">
+            This instant blueprint is generated in your browser for educational purposes only. It estimates federal self-employment or payroll taxes, then subtracts selected state S-Corp tax and compliance costs. It is not tax, legal, or accounting advice.
+          </p>
+        </div>
+      </section>
+
+      <section class="border-t border-line bg-white">
+        <div class="mx-auto max-w-7xl px-5 py-10 sm:px-6 lg:px-8">
+          <div class="mb-7 max-w-2xl">
+            <h2 class="text-2xl font-black tracking-normal text-ink">100% Self-Service S-Corp Toolkit</h2>
+            <p class="mt-2 text-sm leading-6 text-slate-600">No account, no scheduling, no human handoff. Estimate savings, read the AI blueprint, then choose your own next step.</p>
+          </div>
+
+          <div class="grid gap-5 md:grid-cols-3">
+            <a id="selfServiceBizeeCta" href="#" target="_blank" rel="noopener sponsored" class="rounded-lg border border-line bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-soft">
+              <p class="text-sm font-bold uppercase tracking-wide text-emerald-600">Self-service formation</p>
+              <h3 class="mt-3 text-lg font-black tracking-normal text-ink">Form Your S-Corp Automatically via Bizee</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600">Start formation online with a $0 base fee offer and keep the process fully self-directed.</p>
+              <span class="mt-5 inline-flex rounded-lg bg-ink px-4 py-2 text-sm font-bold text-white">$0 base fee</span>
+            </a>
+
+            <a id="selfServiceGustoCta" href="#" target="_blank" rel="noopener sponsored" class="rounded-lg border border-line bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-soft">
+              <p class="text-sm font-bold uppercase tracking-wide text-sky-600">Self-service payroll</p>
+              <h3 class="mt-3 text-lg font-black tracking-normal text-ink">Set Up Compliant W-2 Payroll via Gusto</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600">Run owner salary, payroll filings, and W-2 workflows directly through payroll software.</p>
+              <span class="mt-5 inline-flex rounded-lg bg-ink px-4 py-2 text-sm font-bold text-white">Get 3 months free</span>
+            </a>
+
+            <button id="selfServiceBlueprintCta" type="button" class="rounded-lg border border-line bg-white p-5 text-left shadow-sm transition hover:-translate-y-1 hover:border-amber-300 hover:shadow-soft">
+              <p class="text-sm font-bold uppercase tracking-wide text-amber-600">Instant AI report</p>
+              <h3 class="mt-3 text-lg font-black tracking-normal text-ink">Generate the free blueprint now</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600">Open a state-specific S-Corp education report immediately on this page.</p>
+              <span class="mt-5 inline-flex rounded-lg bg-ink px-4 py-2 text-sm font-bold text-white">No registration</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const SOCIAL_SECURITY_WAGE_BASE_2026 = 184500;
+      const SOCIAL_SECURITY_RATE = 0.124;
+      const MEDICARE_RATE = 0.029;
+      const SE_NET_EARNINGS_FACTOR = 0.9235;
+      const MIN_INCOME = 20000;
+      const MAX_INCOME = 3000000;
+      const MIN_SALARY = 10000;
+      const MAX_SALARY = 300000;
+      const DEFAULT_STATE_SLUG = "california";
+      const ROUTE_PREFIX = "/s-corp-calculator/";
+      const BIZEE_AFFILIATE_BASE = "https://www.bizee.com/";
+      const GUSTO_AFFILIATE_BASE = "https://gusto.com/r/s-corp-calculator";
+
+      const stateTaxRules = {
+        alabama: {
+          code: "AL",
+          name: "Alabama",
+          annualReportFee: 100,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        alaska: {
+          code: "AK",
+          name: "Alaska",
+          annualReportFee: 100,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        arizona: {
+          code: "AZ",
+          name: "Arizona",
+          annualReportFee: 45,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        arkansas: {
+          code: "AR",
+          name: "Arkansas",
+          annualReportFee: 100,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        california: {
+          code: "CA",
+          name: "California",
+          annualReportFee: 0,
+          fixedMinimumTax: 800,
+          netIncomeRate: 0.015,
+          ruleLabel: "$800 minimum franchise tax plus 1.5% state S-Corp tax",
+        },
+        colorado: {
+          code: "CO",
+          name: "Colorado",
+          annualReportFee: 10,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        connecticut: {
+          code: "CT",
+          name: "Connecticut",
+          annualReportFee: 80,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        delaware: {
+          code: "DE",
+          name: "Delaware",
+          annualReportFee: 50,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        florida: {
+          code: "FL",
+          name: "Florida",
+          annualReportFee: 61,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        georgia: {
+          code: "GA",
+          name: "Georgia",
+          annualReportFee: 50,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        hawaii: {
+          code: "HI",
+          name: "Hawaii",
+          annualReportFee: 15,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        idaho: {
+          code: "ID",
+          name: "Idaho",
+          annualReportFee: 0,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        illinois: {
+          code: "IL",
+          name: "Illinois",
+          annualReportFee: 0,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0.015,
+          ruleLabel: "1.5% Personal Property Replacement Tax",
+        },
+        indiana: {
+          code: "IN",
+          name: "Indiana",
+          annualReportFee: 50,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        iowa: {
+          code: "IA",
+          name: "Iowa",
+          annualReportFee: 30,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        kansas: {
+          code: "KS",
+          name: "Kansas",
+          annualReportFee: 55,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        kentucky: {
+          code: "KY",
+          name: "Kentucky",
+          annualReportFee: 0,
+          fixedMinimumTax: 175,
+          netIncomeRate: 0,
+          ruleLabel: "$175 minimum LLET",
+        },
+        louisiana: {
+          code: "LA",
+          name: "Louisiana",
+          annualReportFee: 30,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        maine: {
+          code: "ME",
+          name: "Maine",
+          annualReportFee: 85,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        maryland: {
+          code: "MD",
+          name: "Maryland",
+          annualReportFee: 100,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        massachusetts: {
+          code: "MA",
+          name: "Massachusetts",
+          annualReportFee: 100,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        michigan: {
+          code: "MI",
+          name: "Michigan",
+          annualReportFee: 25,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        minnesota: {
+          code: "MN",
+          name: "Minnesota",
+          annualReportFee: 0,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        mississippi: {
+          code: "MS",
+          name: "Mississippi",
+          annualReportFee: 25,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        missouri: {
+          code: "MO",
+          name: "Missouri",
+          annualReportFee: 0,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        montana: {
+          code: "MT",
+          name: "Montana",
+          annualReportFee: 20,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        nebraska: {
+          code: "NE",
+          name: "Nebraska",
+          annualReportFee: 26,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        nevada: {
+          code: "NV",
+          name: "Nevada",
+          annualReportFee: 100,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        "new-hampshire": {
+          code: "NH",
+          name: "New Hampshire",
+          annualReportFee: 100,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        "new-jersey": {
+          code: "NJ",
+          name: "New Jersey",
+          annualReportFee: 75,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        "new-mexico": {
+          code: "NM",
+          name: "New Mexico",
+          annualReportFee: 25,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        "new-york": {
+          code: "NY",
+          name: "New York",
+          annualReportFee: 0,
+          fixedMinimumTax: 25,
+          netIncomeRate: 0,
+          ruleLabel: "$25 fixed minimum tax",
+          notice: "Note: New York City does not recognize federal S-Corp status and may impose an additional 8.85% city tax. This calculator only models New York State rules.",
+        },
+        "north-carolina": {
+          code: "NC",
+          name: "North Carolina",
+          annualReportFee: 25,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        "north-dakota": {
+          code: "ND",
+          name: "North Dakota",
+          annualReportFee: 50,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        ohio: {
+          code: "OH",
+          name: "Ohio",
+          annualReportFee: 0,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        oklahoma: {
+          code: "OK",
+          name: "Oklahoma",
+          annualReportFee: 25,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        oregon: {
+          code: "OR",
+          name: "Oregon",
+          annualReportFee: 100,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        pennsylvania: {
+          code: "PA",
+          name: "Pennsylvania",
+          annualReportFee: 7,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        "rhode-island": {
+          code: "RI",
+          name: "Rhode Island",
+          annualReportFee: 0,
+          fixedMinimumTax: 400,
+          netIncomeRate: 0,
+          ruleLabel: "$400 minimum corporate tax",
+        },
+        "south-carolina": {
+          code: "SC",
+          name: "South Carolina",
+          annualReportFee: 0,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        "south-dakota": {
+          code: "SD",
+          name: "South Dakota",
+          annualReportFee: 50,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        tennessee: {
+          code: "TN",
+          name: "Tennessee",
+          annualReportFee: 0,
+          fixedMinimumTax: 100,
+          netIncomeRate: 0.065,
+          ruleLabel: "6.5% excise tax plus $100 minimum franchise tax",
+        },
+        texas: {
+          code: "TX",
+          name: "Texas",
+          annualReportFee: 0,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+          threshold: 2470000,
+          thresholdNotice: "Texas franchise tax may apply above $2,470,000 in total revenue. This calculator does not deduct it by default.",
+        },
+        utah: {
+          code: "UT",
+          name: "Utah",
+          annualReportFee: 20,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        vermont: {
+          code: "VT",
+          name: "Vermont",
+          annualReportFee: 45,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        virginia: {
+          code: "VA",
+          name: "Virginia",
+          annualReportFee: 100,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        washington: {
+          code: "WA",
+          name: "Washington",
+          annualReportFee: 0,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+          notice: "Washington has no personal income tax, but it may impose B&O gross receipts tax.",
+        },
+        "west-virginia": {
+          code: "WV",
+          name: "West Virginia",
+          annualReportFee: 25,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        wisconsin: {
+          code: "WI",
+          name: "Wisconsin",
+          annualReportFee: 25,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+        wyoming: {
+          code: "WY",
+          name: "Wyoming",
+          annualReportFee: 60,
+          fixedMinimumTax: 0,
+          netIncomeRate: 0,
+        },
+      };
+
+      const elements = {
+        pageTitle: document.getElementById("pageTitle"),
+        heroDescription: document.getElementById("heroDescription"),
+        metaDescription: document.getElementById("metaDescription"),
+        canonicalUrl: document.getElementById("canonicalUrl"),
+        ogTitle: document.getElementById("ogTitle"),
+        ogDescription: document.getElementById("ogDescription"),
+        incomeRange: document.getElementById("incomeRange"),
+        incomeInput: document.getElementById("incomeInput"),
+        salaryRange: document.getElementById("salaryRange"),
+        salaryInput: document.getElementById("salaryInput"),
+        salaryMaxLabel: document.getElementById("salaryMaxLabel"),
+        salaryWarning: document.getElementById("salaryWarning"),
+        stateSelect: document.getElementById("stateSelect"),
+        stateCost: document.getElementById("stateCost"),
+        stateNotice: document.getElementById("stateNotice"),
+        breakdownStateCost: document.getElementById("breakdownStateCost"),
+        soleTax: document.getElementById("soleTax"),
+        sCorpPayrollTax: document.getElementById("sCorpPayrollTax"),
+        distributions: document.getElementById("distributions"),
+        savingsPanel: document.getElementById("savingsPanel"),
+        savingsLabel: document.getElementById("savingsLabel"),
+        savingsCard: document.getElementById("savingsCard"),
+        savingsSubtext: document.getElementById("savingsSubtext"),
+        negativeSavingsWarning: document.getElementById("negativeSavingsWarning"),
+        heroMetricLabel: document.getElementById("heroMetricLabel"),
+        heroSavings: document.getElementById("heroSavings"),
+        heroBar: document.getElementById("heroBar"),
+        affiliateCta: document.getElementById("affiliateCta"),
+        bizeeCta: document.getElementById("bizeeCta"),
+        gustoCta: document.getElementById("gustoCta"),
+        ctaSavingsBadge: document.getElementById("ctaSavingsBadge"),
+        unlockReportButton: document.getElementById("unlockReportButton"),
+        aiBlueprintSection: document.getElementById("ai-blueprint-report"),
+        blueprintTitle: document.getElementById("blueprintTitle"),
+        blueprintSubtitle: document.getElementById("blueprintSubtitle"),
+        blueprintSavings: document.getElementById("blueprintSavings"),
+        blueprintStateCost: document.getElementById("blueprintStateCost"),
+        blueprintSalaryBand: document.getElementById("blueprintSalaryBand"),
+        blueprintSeoTitle: document.getElementById("blueprintSeoTitle"),
+        blueprintParagraphOne: document.getElementById("blueprintParagraphOne"),
+        blueprintParagraphTwo: document.getElementById("blueprintParagraphTwo"),
+        blueprintSummary: document.getElementById("blueprintSummary"),
+        blueprintStateRules: document.getElementById("blueprintStateRules"),
+        blueprintActionPlan: document.getElementById("blueprintActionPlan"),
+        printBlueprintTop: document.getElementById("printBlueprintTop"),
+        printBlueprintBottom: document.getElementById("printBlueprintBottom"),
+        bottomBizeeCta: document.getElementById("bottomBizeeCta"),
+        bottomGustoCta: document.getElementById("bottomGustoCta"),
+        selfServiceBizeeCta: document.getElementById("selfServiceBizeeCta"),
+        selfServiceGustoCta: document.getElementById("selfServiceGustoCta"),
+        selfServiceBlueprintCta: document.getElementById("selfServiceBlueprintCta"),
+      };
+
+      let chart;
+      let displayedSavings = 0;
+      let isSyncingRoute = false;
+      let isBlueprintOpen = false;
+
+      const currency = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      });
+
+      function money(value) {
+        return currency.format(Math.round(value));
+      }
+
+      function clamp(value, min, max) {
+        return Math.min(Math.max(Number(value) || min, min), max);
+      }
+
+      function getStateSlugFromPath() {
+        const pathParts = window.location.pathname.split("/").filter(Boolean);
+        const prefix = ROUTE_PREFIX.split("/").filter(Boolean)[0];
+        const stateSlug = pathParts[0] === prefix ? pathParts[1] : "";
+        return stateTaxRules[stateSlug] ? stateSlug : "";
+      }
+
+      function getStateRuleBySlug(slug) {
+        return stateTaxRules[slug] || stateTaxRules[DEFAULT_STATE_SLUG];
+      }
+
+      function getSlugForStateRule(stateRule) {
+        const match = Object.entries(stateTaxRules).find(([, rule]) => rule.code === stateRule.code);
+        return match ? match[0] : DEFAULT_STATE_SLUG;
+      }
+
+      function getStateTaxRuleDescription(stateRule) {
+        if (stateRule.ruleLabel) {
+          return stateRule.ruleLabel;
+        }
+
+        if (stateRule.thresholdNotice && !stateRule.fixedMinimumTax && !stateRule.netIncomeRate) {
+          return "no default deduction in this calculator, with a possible franchise tax threshold notice";
+        }
+
+        if (stateRule.notice && !stateRule.fixedMinimumTax && !stateRule.netIncomeRate && !stateRule.annualReportFee) {
+          return stateRule.notice;
+        }
+
+        if (stateRule.annualReportFee) {
+          return `an estimated ${money(stateRule.annualReportFee)} fixed annual report or compliance fee`;
+        }
+
+        return "a default modeled annual compliance cost between $0 and $100";
+      }
+
+      function renderPageMetadata(stateRule) {
+        const title = `${stateRule.name} S-Corp Tax Savings Calculator (Updated for 2026)`;
+        const description = `Free instant AI S-Corp tax savings calculator for ${stateRule.name}. No registration required. Compare sole proprietor self-employment tax against S-Corp payroll tax, reasonable salary, and state-level costs.`;
+
+        document.title = title;
+        elements.pageTitle.textContent = title;
+        elements.heroDescription.textContent = description;
+        elements.metaDescription.setAttribute("content", description);
+        elements.canonicalUrl.setAttribute("href", `${window.location.origin}${ROUTE_PREFIX}${getSlugForStateRule(stateRule)}`);
+        elements.ogTitle.setAttribute("content", title);
+        elements.ogDescription.setAttribute("content", description);
+      }
+
+      function renderBlueprint(stateRule, result, income, salary) {
+        const ruleDescription = getStateTaxRuleDescription(stateRule);
+        const lowerSalary = Math.round(income * 0.4);
+        const upperSalary = Math.round(income * 0.6);
+        const savingsText = result.savings >= 0
+          ? `${money(result.savings)} in estimated annual tax savings`
+          : `${money(Math.abs(result.savings))} in estimated annual extra cost`;
+
+        elements.blueprintTitle.textContent = `${stateRule.name} AI Tax Optimization Blueprint`;
+        elements.blueprintSubtitle.textContent = "100% free, no registration required, instant AI generation.";
+        elements.blueprintSavings.textContent = result.savings >= 0 ? money(result.savings) : `-${money(Math.abs(result.savings))}`;
+        elements.blueprintSavings.classList.toggle("text-emerald-600", result.savings >= 0);
+        elements.blueprintSavings.classList.toggle("text-rose-600", result.savings < 0);
+        elements.blueprintStateCost.textContent = money(result.stateCost);
+        elements.blueprintSalaryBand.textContent = `${money(lowerSalary)} - ${money(upperSalary)}`;
+        elements.blueprintSeoTitle.textContent = `Is an S-Corp Worth It in ${stateRule.name}?`;
+        elements.blueprintParagraphOne.textContent = `If you operate a self-employed business in ${stateRule.name}, an S-Corp election can help reduce federal self-employment tax of up to 15.3% once annual net profit passes the right threshold. However, ${stateRule.name} has state-specific compliance costs, such as ${ruleDescription}.`;
+        elements.blueprintParagraphTwo.textContent = `The IRS requires S-Corp owner-employees to pay themselves a reasonable salary. In ${stateRule.name}, software engineers, consultants, real estate agents, and other service professionals often model salary between 40% and 60% of annual profit, then run that compensation through compliant payroll software.`;
+        elements.blueprintSummary.textContent = `Based on ${money(income)} in annual net income and a proposed W-2 salary of ${money(salary)}, this model estimates ${money(result.soleTax)} in sole proprietor self-employment tax versus ${money(result.sCorpPayrollTax)} in S-Corp payroll tax plus ${money(result.stateCost)} in state-level S-Corp costs. The result is ${savingsText}.`;
+        elements.blueprintStateRules.textContent = `${stateRule.name} rule model: ${ruleDescription}. ${result.stateNotices.length ? result.stateNotices.join(" ") : "No additional state warning is triggered by the current inputs."}`;
+        elements.blueprintActionPlan.innerHTML = "";
+        [
+          "Use this calculator as an education-first screening tool before changing tax status.",
+          `Compare your proposed salary of ${money(salary)} against the suggested 40% to 60% range shown above.`,
+          "If savings remain meaningful after state costs, form the S-Corp election or entity through a self-service provider.",
+          "Set up W-2 payroll before taking distributions so owner salary and payroll tax workflows stay separated.",
+          "Download this blueprint as a PDF and keep it with your annual planning notes.",
+        ].forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          elements.blueprintActionPlan.appendChild(li);
+        });
+      }
+
+      function buildAffiliateUrl(baseUrl, stateRule, savings, source) {
+        const url = new URL(baseUrl);
+        url.searchParams.set("utm_source", "s_corp_calculator");
+        url.searchParams.set("utm_medium", "affiliate");
+        url.searchParams.set("utm_campaign", `${stateRule.code.toLowerCase()}_s_corp_2026`);
+        url.searchParams.set("utm_content", source);
+        url.searchParams.set("state", stateRule.name);
+        url.searchParams.set("estimated_savings", String(Math.max(Math.round(savings), 0)));
+        return url.toString();
+      }
+
+      function renderAffiliateCta(savings, stateRule) {
+        const shouldShow = savings > 3000;
+        elements.affiliateCta.classList.toggle("hidden", !shouldShow);
+        const bizeeUrl = buildAffiliateUrl(BIZEE_AFFILIATE_BASE, stateRule, savings, "bizee_formation_cta");
+        const gustoUrl = buildAffiliateUrl(GUSTO_AFFILIATE_BASE, stateRule, savings, "gusto_payroll_cta");
+
+        elements.bizeeCta.href = bizeeUrl;
+        elements.gustoCta.href = gustoUrl;
+        elements.bottomBizeeCta.href = bizeeUrl;
+        elements.bottomGustoCta.href = gustoUrl;
+        elements.selfServiceBizeeCta.href = bizeeUrl;
+        elements.selfServiceGustoCta.href = gustoUrl;
+
+        if (!shouldShow) {
+          return;
+        }
+
+        elements.ctaSavingsBadge.textContent = `${money(savings)} estimated savings`;
+      }
+
+      function navigateToStateRoute(slug, mode = "pushState") {
+        const targetPath = `${ROUTE_PREFIX}${slug}`;
+
+        if (window.location.pathname === targetPath) {
+          return;
+        }
+
+        isSyncingRoute = true;
+        window.history[mode]({ stateSlug: slug }, "", targetPath);
+        isSyncingRoute = false;
+      }
+
+      function syncStateFromRoute() {
+        if (isSyncingRoute) {
+          return;
+        }
+
+        const routeSlug = getStateSlugFromPath();
+
+        if (routeSlug && routeSlug !== elements.stateSelect.value) {
+          elements.stateSelect.value = routeSlug;
+          updateResults({ syncRoute: false });
+        }
+      }
+
+      function setupRouteListeners() {
+        if (window.__sCorpRouteListenersReady) {
+          return;
+        }
+
+        window.__sCorpRouteListenersReady = true;
+        ["pushState", "replaceState"].forEach((methodName) => {
+          const originalMethod = window.history[methodName];
+          window.history[methodName] = function (...args) {
+            const result = originalMethod.apply(this, args);
+            window.dispatchEvent(new Event("locationchange"));
+            return result;
+          };
+        });
+        window.addEventListener("popstate", () => window.dispatchEvent(new Event("locationchange")));
+        window.addEventListener("locationchange", syncStateFromRoute);
+      }
+
+      function openBlueprintReport() {
+        if (!isBlueprintOpen) {
+          elements.aiBlueprintSection.classList.remove("hidden");
+          elements.aiBlueprintSection.classList.add("report-open");
+          isBlueprintOpen = true;
+        }
+
+        elements.aiBlueprintSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+
+      function printBlueprintReport() {
+        openBlueprintReport();
+        window.print();
+      }
+
+      function payrollTaxOnWages(wages) {
+        const socialSecurityTaxableIncome = Math.min(wages, SOCIAL_SECURITY_WAGE_BASE_2026);
+        const socialSecurityTax = socialSecurityTaxableIncome * SOCIAL_SECURITY_RATE;
+        const medicareTax = wages * MEDICARE_RATE;
+        return {
+          socialSecurityTax,
+          medicareTax,
+          total: socialSecurityTax + medicareTax,
+        };
+      }
+
+      function calculateStateRuleCost(income, stateRule) {
+        const annualReportFee = stateRule.annualReportFee || 0;
+        const fixedMinimumTax = stateRule.fixedMinimumTax || 0;
+        const stateIncomeTax = income * (stateRule.netIncomeRate || 0);
+        return annualReportFee + fixedMinimumTax + stateIncomeTax;
+      }
+
+      function getStateNotices(income, stateRule) {
+        const notices = [];
+
+        if (stateRule.notice) {
+          notices.push(stateRule.notice);
+        }
+
+        if (stateRule.threshold && income > stateRule.threshold && stateRule.thresholdNotice) {
+          notices.push(stateRule.thresholdNotice);
+        }
+
+        return notices;
+      }
+
+      function calculateScenario(income, salary, stateRule) {
+        const stateCost = calculateStateRuleCost(income, stateRule);
+        const netSelfEmploymentEarnings = income * SE_NET_EARNINGS_FACTOR;
+        const soleTax = payrollTaxOnWages(netSelfEmploymentEarnings).total;
+        const sCorpPayrollTax = payrollTaxOnWages(salary).total;
+        const distributions = Math.max(income - salary, 0);
+        const sCorpTotalCost = sCorpPayrollTax + stateCost;
+        const savings = soleTax - sCorpTotalCost;
+
+        return {
+          netSelfEmploymentEarnings,
+          soleTax,
+          sCorpPayrollTax,
+          distributions,
+          stateCost,
+          stateNotices: getStateNotices(income, stateRule),
+          sCorpTotalCost,
+          savings,
+        };
+      }
+
+      function updateRangeFill(input) {
+        const min = Number(input.min);
+        const max = Number(input.max);
+        const value = Number(input.value);
+        const progress = ((value - min) / (max - min)) * 100;
+        input.style.setProperty("--range-progress", `${Math.max(0, Math.min(progress, 100))}%`);
+      }
+
+      function animateMoney(target, node) {
+        const start = displayedSavings;
+        const duration = 520;
+        const startedAt = performance.now();
+
+        function tick(now) {
+          const elapsed = Math.min((now - startedAt) / duration, 1);
+          const eased = 1 - Math.pow(1 - elapsed, 3);
+          const current = start + (target - start) * eased;
+          node.textContent = money(current);
+
+          if (elapsed < 1) {
+            requestAnimationFrame(tick);
+          } else {
+            displayedSavings = target;
+            node.textContent = money(target);
+            node.classList.remove("money-pulse");
+            void node.offsetWidth;
+            node.classList.add("money-pulse");
+          }
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      function populateStates() {
+        elements.stateSelect.innerHTML = Object.entries(stateTaxRules)
+          .map(([slug, rule]) => {
+            const selected = slug === DEFAULT_STATE_SLUG ? "selected" : "";
+            return `<option value="${slug}" ${selected}>${rule.name}</option>`;
+          })
+          .join("");
+      }
+
+      function getSelectedStateRule() {
+        return getStateRuleBySlug(elements.stateSelect.value);
+      }
+
+      function syncSalaryBounds(income) {
+        const salaryMax = Math.min(MAX_SALARY, income);
+        elements.salaryRange.max = salaryMax;
+        elements.salaryInput.max = salaryMax;
+        elements.salaryMaxLabel.textContent = income < MAX_SALARY ? money(income).replace(".00", "") : "$300k";
+        return salaryMax;
+      }
+
+      function readInputs() {
+        const income = clamp(elements.incomeInput.value, MIN_INCOME, MAX_INCOME);
+        const salaryMax = syncSalaryBounds(income);
+        const rawSalary = Number(elements.salaryInput.value) || MIN_SALARY;
+        const salary = clamp(rawSalary, MIN_SALARY, salaryMax);
+        const capped = rawSalary > salaryMax;
+
+        elements.incomeInput.value = income;
+        elements.incomeRange.value = income;
+        elements.salaryInput.value = salary;
+        elements.salaryRange.value = salary;
+        elements.salaryWarning.classList.toggle("hidden", !capped);
+
+        updateRangeFill(elements.incomeRange);
+        updateRangeFill(elements.salaryRange);
+
+        return {
+          income,
+          salary,
+          stateRule: getSelectedStateRule(),
+        };
+      }
+
+      function renderStateNotice(messages) {
+        elements.stateNotice.classList.toggle("hidden", messages.length === 0);
+        elements.stateNotice.textContent = messages.join(" ");
+      }
+
+      function renderSavingsState(savings) {
+        const isNegative = savings < 0;
+        const positiveSavings = Math.max(savings, 0);
+
+        elements.savingsPanel.className = isNegative
+          ? "rounded-lg border border-amber-300 bg-gradient-to-br from-amber-500 to-rose-500 p-6 text-white shadow-lift"
+          : "rounded-lg border border-emerald-200 bg-gradient-to-br from-emerald-600 to-teal-500 p-6 text-white shadow-lift";
+        elements.savingsLabel.textContent = isNegative ? "Estimated shortfall" : "You could save";
+        elements.savingsSubtext.textContent = isNegative
+          ? "additional annual cost after state tax and compliance rules"
+          : "per year after state tax and compliance cost";
+        elements.negativeSavingsWarning.classList.toggle("hidden", !isNegative);
+        elements.heroMetricLabel.textContent = isNegative ? "Estimated annual shortfall" : "Estimated annual savings";
+        elements.heroSavings.classList.toggle("text-emerald-600", !isNegative);
+        elements.heroSavings.classList.toggle("text-rose-600", isNegative);
+        elements.heroBar.style.width = `${Math.min((positiveSavings / 25000) * 100, 100)}%`;
+      }
+
+      function updateResults({ syncRoute = true } = {}) {
+        const { income, salary, stateRule } = readInputs();
+        const result = calculateScenario(income, salary, stateRule);
+
+        if (syncRoute) {
+          navigateToStateRoute(elements.stateSelect.value);
+        }
+
+        renderPageMetadata(stateRule);
+        renderBlueprint(stateRule, result, income, salary);
+        elements.stateCost.textContent = money(result.stateCost);
+        elements.breakdownStateCost.textContent = money(result.stateCost);
+        elements.soleTax.textContent = money(result.soleTax);
+        elements.sCorpPayrollTax.textContent = money(result.sCorpPayrollTax);
+        elements.distributions.textContent = money(result.distributions);
+        elements.savingsCard.textContent = money(result.savings);
+
+        renderStateNotice(result.stateNotices);
+        renderSavingsState(result.savings);
+        renderAffiliateCta(result.savings, stateRule);
+        animateMoney(result.savings, elements.heroSavings);
+
+        chart.data.datasets[0].data = [result.soleTax, result.sCorpPayrollTax];
+        chart.data.datasets[1].data = [0, result.stateCost];
+        chart.update();
+      }
+
+      function createChart() {
+        const context = document.getElementById("taxChart");
+        chart = new Chart(context, {
+          type: "bar",
+          data: {
+            labels: ["Sole Proprietor", "S-Corp"],
+            datasets: [
+              {
+                label: "Federal tax cost",
+                data: [0, 0],
+                backgroundColor: ["rgba(15, 23, 42, 0.86)", "rgba(25, 169, 116, 0.88)"],
+                borderRadius: 8,
+                borderSkipped: false,
+              },
+              {
+                label: "State tax and compliance cost",
+                data: [0, 0],
+                backgroundColor: "rgba(14, 165, 233, 0.72)",
+                borderRadius: 8,
+                borderSkipped: false,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+              intersect: false,
+              mode: "index",
+            },
+            scales: {
+              x: {
+                stacked: true,
+                grid: {
+                  display: false,
+                },
+                ticks: {
+                  color: "#475569",
+                  font: {
+                    weight: "700",
+                  },
+                },
+              },
+              y: {
+                stacked: true,
+                beginAtZero: true,
+                border: {
+                  display: false,
+                },
+                grid: {
+                  color: "rgba(148, 163, 184, 0.22)",
+                },
+                ticks: {
+                  color: "#64748b",
+                  callback: (value) => `$${Number(value / 1000).toFixed(0)}k`,
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  boxWidth: 12,
+                  boxHeight: 12,
+                  color: "#475569",
+                  font: {
+                    weight: "700",
+                  },
+                },
+              },
+              tooltip: {
+                backgroundColor: "#10201a",
+                padding: 12,
+                titleFont: {
+                  weight: "800",
+                },
+                callbacks: {
+                  label: (item) => `${item.dataset.label}: ${money(item.parsed.y)}`,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function bindEvents() {
+        elements.incomeRange.addEventListener("input", () => {
+          elements.incomeInput.value = elements.incomeRange.value;
+          updateResults({ syncRoute: false });
+        });
+
+        elements.incomeInput.addEventListener("input", () => updateResults({ syncRoute: false }));
+
+        elements.salaryRange.addEventListener("input", () => {
+          elements.salaryInput.value = elements.salaryRange.value;
+          updateResults({ syncRoute: false });
+        });
+
+        elements.salaryInput.addEventListener("input", () => updateResults({ syncRoute: false }));
+        elements.stateSelect.addEventListener("change", () => updateResults({ syncRoute: true }));
+        elements.unlockReportButton.addEventListener("click", openBlueprintReport);
+        elements.selfServiceBlueprintCta.addEventListener("click", openBlueprintReport);
+        elements.printBlueprintTop.addEventListener("click", printBlueprintReport);
+        elements.printBlueprintBottom.addEventListener("click", printBlueprintReport);
+      }
+
+      function init() {
+        populateStates();
+        createChart();
+        elements.incomeInput.value = 120000;
+        elements.incomeRange.value = 120000;
+        elements.salaryInput.value = 70000;
+        elements.salaryRange.value = 70000;
+        elements.stateSelect.value = getStateSlugFromPath() || DEFAULT_STATE_SLUG;
+        setupRouteListeners();
+        bindEvents();
+        updateResults({ syncRoute: false });
+      }
+
+      init();
+    </script>
+  </body>
+</html>
