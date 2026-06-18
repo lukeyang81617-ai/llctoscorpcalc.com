@@ -109,6 +109,14 @@
         animation: reportOpen 520ms ease-out both;
       }
 
+      .modal-pop {
+        animation: modalPop 180ms ease-out both;
+      }
+
+      .cookie-slide {
+        animation: cookieSlide 260ms ease-out both;
+      }
+
       @keyframes moneyPulse {
         0% {
           transform: translateY(0) scale(1);
@@ -137,6 +145,28 @@
         0% {
           opacity: 0;
           transform: translateY(-16px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes modalPop {
+        0% {
+          opacity: 0;
+          transform: translateY(12px) scale(0.98);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes cookieSlide {
+        0% {
+          opacity: 0;
+          transform: translateY(100%);
         }
         100% {
           opacity: 1;
@@ -250,6 +280,17 @@
               <p class="mt-4 text-sm leading-6 text-slate-600">
                 100% free estimate. Your AI tax optimization blueprint is generated instantly in your browser.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="no-print bg-cloud px-5 pt-6 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl">
+          <div class="flex min-h-[96px] items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-100/70 px-5 py-6 text-center">
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">Advertisement</p>
+              <div class="mt-2 h-1 w-24 rounded-full bg-slate-200"></div>
             </div>
           </div>
         </div>
@@ -414,6 +455,17 @@
         </section>
       </section>
 
+      <section class="no-print border-t border-line bg-white px-5 py-7 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-4xl">
+          <div class="flex min-h-[120px] items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 px-5 py-7 text-center">
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">Advertisement</p>
+              <div class="mt-2 h-1 w-28 rounded-full bg-slate-200"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="ai-blueprint-report" class="hidden border-t border-line bg-white">
         <div id="blueprintPrintArea" class="mx-auto max-w-4xl px-5 py-10 sm:px-6 lg:px-8">
           <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
@@ -515,6 +567,148 @@
         </div>
       </section>
     </main>
+
+    <footer class="no-print border-t border-slate-800 bg-ink">
+      <div class="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+        <p class="font-semibold text-slate-300">&copy; 2026 S-Corp Toolkit. All rights reserved.</p>
+        <nav class="flex flex-wrap items-center gap-3 md:justify-end" aria-label="Legal and company links">
+          <button type="button" data-legal-modal="privacy" class="rounded-lg px-3 py-2 font-bold text-slate-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-4 focus:ring-emerald-400/30">
+            Privacy Policy
+          </button>
+          <button type="button" data-legal-modal="terms" class="rounded-lg px-3 py-2 font-bold text-slate-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-4 focus:ring-emerald-400/30">
+            Terms of Service
+          </button>
+          <button type="button" data-legal-modal="about" class="rounded-lg px-3 py-2 font-bold text-slate-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-4 focus:ring-emerald-400/30">
+            About Us
+          </button>
+          <button type="button" data-legal-modal="contact" class="rounded-lg px-3 py-2 font-bold text-slate-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-4 focus:ring-emerald-400/30">
+            Contact Us
+          </button>
+        </nav>
+      </div>
+    </footer>
+
+    <div id="legalModal" class="no-print fixed inset-0 z-50 hidden items-center justify-center px-4 py-6" role="dialog" aria-modal="true" aria-labelledby="legalModalTitle">
+      <button id="legalModalBackdrop" type="button" class="absolute inset-0 bg-ink/70 backdrop-blur-sm" aria-label="Close legal dialog"></button>
+      <section class="modal-pop relative max-h-[88vh] w-full max-w-3xl overflow-hidden rounded-lg border border-line bg-white shadow-soft">
+        <div class="flex items-start justify-between gap-4 border-b border-line px-5 py-4 sm:px-6">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-emerald-600">S-Corp Toolkit</p>
+            <h2 id="legalModalTitle" class="mt-1 text-2xl font-black tracking-normal text-ink">Legal Information</h2>
+          </div>
+          <button id="legalModalClose" type="button" class="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line bg-white text-xl font-black text-slate-500 transition hover:border-slate-300 hover:bg-slate-50 hover:text-ink focus:outline-none focus:ring-4 focus:ring-emerald-100" aria-label="Close legal dialog">
+            &times;
+          </button>
+        </div>
+        <div id="legalModalBody" class="max-h-[68vh] overflow-y-auto px-5 py-5 text-sm leading-7 text-slate-700 sm:px-6"></div>
+      </section>
+    </div>
+
+    <div id="cookieConsentBanner" class="no-print cookie-slide fixed inset-x-0 bottom-0 z-40 hidden border-t border-line bg-white/95 px-5 py-4 shadow-[0_-18px_45px_rgba(16,32,26,0.12)] backdrop-blur sm:px-6 lg:px-8">
+      <div class="mx-auto flex max-w-7xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <p class="text-sm font-semibold leading-6 text-slate-600">
+          We use cookies to improve your experience and analyze traffic. By continuing to use our tool, you agree to our
+          <button type="button" data-legal-modal="privacy" class="font-black text-emerald-700 underline decoration-emerald-300 underline-offset-4 hover:text-emerald-800">
+            Privacy Policy
+          </button>.
+        </p>
+        <button id="acceptCookiesButton" type="button" class="rounded-lg bg-ink px-5 py-3 text-sm font-black text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-emerald-200">
+          Accept
+        </button>
+      </div>
+    </div>
+
+    <template id="privacyContent">
+      <div class="space-y-5">
+        <section>
+          <h3 class="text-lg font-black tracking-normal text-ink">Privacy Policy</h3>
+          <p class="mt-2">This Privacy Policy explains how S-Corp Toolkit handles information when you use this free S-Corp tax savings calculator and related self-service education tools.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Information We Process</h4>
+          <p class="mt-2">The calculator runs in your browser. We do not require registration, and we do not ask for your name, phone number, email address, Social Security number, tax ID, or other personal tax records. Inputs such as income, proposed salary, and state selection are used to display estimates on this page.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Google AdSense, Cookies, and Advertising</h4>
+          <p class="mt-2">We use Google AdSense to serve ads. Google uses cookies to serve ads based on a user's prior visits to this website or other websites. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this website. Google's use of advertising cookies enables it and its partners to serve ads to users based on their visit to this site and other sites on the Internet.</p>
+          <p class="mt-2">Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener" class="font-bold text-emerald-700 underline decoration-emerald-300 underline-offset-4">Google Ads Settings</a>. Users may also opt out of some third-party vendors' use of cookies for personalized advertising by visiting <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener" class="font-bold text-emerald-700 underline decoration-emerald-300 underline-offset-4">www.aboutads.info/choices</a>.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Analytics and Site Operations</h4>
+          <p class="mt-2">We may use cookies, local storage, and privacy-safe analytics tools to remember your cookie preference, understand aggregate traffic patterns, improve page performance, and maintain the security and reliability of the website.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Affiliate Links</h4>
+          <p class="mt-2">Some buttons may link to third-party self-service platforms such as Bizee or Gusto. We may receive compensation if you click a sponsored link or purchase through one of those platforms. Third-party websites have their own privacy policies and terms.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Financial and Tax Disclaimer</h4>
+          <p class="mt-2">This website provides educational estimates only. It is not tax, legal, accounting, payroll, or investment advice. You are responsible for evaluating whether an S-Corp election is appropriate for your circumstances.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Contact</h4>
+          <p class="mt-2">Questions about this policy can be sent to <a href="mailto:support@llctoscorpcalc.com" class="font-bold text-emerald-700 underline decoration-emerald-300 underline-offset-4">support@llctoscorpcalc.com</a>.</p>
+        </section>
+      </div>
+    </template>
+
+    <template id="termsContent">
+      <div class="space-y-5">
+        <section>
+          <h3 class="text-lg font-black tracking-normal text-ink">Terms of Service</h3>
+          <p class="mt-2">By using S-Corp Toolkit, you agree to use this website as an educational, self-service planning utility. The calculator is provided for informational purposes and does not create a professional-client relationship.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">No Professional Advice</h4>
+          <p class="mt-2">The estimates shown on this website are simplified models based on user inputs, federal self-employment tax assumptions, and selected state-level rules. They are not tax, legal, accounting, payroll, or financial advice.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">User Responsibility</h4>
+          <p class="mt-2">You are responsible for verifying your income, reasonable salary, state obligations, entity setup, payroll setup, deadlines, and filing requirements before making any business or tax decision.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Third-Party Links and Sponsored Offers</h4>
+          <p class="mt-2">This website may contain affiliate or sponsored links to third-party services. We do not control those services and are not responsible for their pricing, availability, terms, advice, filings, or customer support.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">No Warranty</h4>
+          <p class="mt-2">The website is provided "as is" and "as available" without warranties of any kind. We do not guarantee that calculations, state rules, tax assumptions, advertisements, or third-party offers will be complete, current, or error-free.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Limitation of Liability</h4>
+          <p class="mt-2">To the fullest extent permitted by law, S-Corp Toolkit is not liable for losses, tax penalties, filing errors, business interruptions, or other damages arising from use of this website or reliance on its outputs.</p>
+        </section>
+      </div>
+    </template>
+
+    <template id="aboutContent">
+      <div class="space-y-5">
+        <section>
+          <h3 class="text-lg font-black tracking-normal text-ink">About Us</h3>
+          <p class="mt-2">We are a team of financial tech enthusiasts dedicated to simplifying US corporate tax logic through AI-powered, self-service utility tools.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Our Mission</h4>
+          <p class="mt-2">S-Corp Toolkit exists to help self-employed professionals understand federal self-employment tax, reasonable salary planning, state compliance costs, and payroll setup paths before they make a major business structure decision.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Our Approach</h4>
+          <p class="mt-2">We focus on transparent calculators, plain-English education, and self-service workflows. We do not require registration, sell CPA appointments, or collect lead forms inside this calculator.</p>
+        </section>
+      </div>
+    </template>
+
+    <template id="contactContent">
+      <div class="space-y-5">
+        <section>
+          <h3 class="text-lg font-black tracking-normal text-ink">Contact Us</h3>
+          <p class="mt-2">For product feedback, privacy questions, or general support, contact us at:</p>
+          <p class="mt-4">
+            <a href="mailto:support@llctoscorpcalc.com" class="inline-flex rounded-lg bg-mint px-4 py-3 text-base font-black text-emerald-800 transition hover:bg-emerald-100 focus:outline-none focus:ring-4 focus:ring-emerald-100">support@llctoscorpcalc.com</a>
+          </p>
+        </section>
+      </div>
+    </template>
 
     <script>
       const SOCIAL_SECURITY_WAGE_BASE_2026 = 184500;
@@ -950,6 +1144,13 @@
         selfServiceBizeeCta: document.getElementById("selfServiceBizeeCta"),
         selfServiceGustoCta: document.getElementById("selfServiceGustoCta"),
         selfServiceBlueprintCta: document.getElementById("selfServiceBlueprintCta"),
+        legalModal: document.getElementById("legalModal"),
+        legalModalTitle: document.getElementById("legalModalTitle"),
+        legalModalBody: document.getElementById("legalModalBody"),
+        legalModalBackdrop: document.getElementById("legalModalBackdrop"),
+        legalModalClose: document.getElementById("legalModalClose"),
+        cookieConsentBanner: document.getElementById("cookieConsentBanner"),
+        acceptCookiesButton: document.getElementById("acceptCookiesButton"),
       };
 
       let chart;
@@ -962,6 +1163,26 @@
         currency: "USD",
         maximumFractionDigits: 0,
       });
+
+      const COOKIE_CONSENT_KEY = "sCorpToolkitCookieConsent2026";
+      const LEGAL_MODAL_CONFIG = {
+        privacy: {
+          title: "Privacy Policy",
+          templateId: "privacyContent",
+        },
+        terms: {
+          title: "Terms of Service",
+          templateId: "termsContent",
+        },
+        about: {
+          title: "About Us",
+          templateId: "aboutContent",
+        },
+        contact: {
+          title: "Contact Us",
+          templateId: "contactContent",
+        },
+      };
 
       function money(value) {
         return currency.format(Math.round(value));
@@ -1419,6 +1640,75 @@
         });
       }
 
+      function openLegalModal(type) {
+        const config = LEGAL_MODAL_CONFIG[type];
+
+        if (!config) {
+          return;
+        }
+
+        const template = document.getElementById(config.templateId);
+        elements.legalModalTitle.textContent = config.title;
+        elements.legalModalBody.innerHTML = template ? template.innerHTML : "";
+        elements.legalModal.classList.remove("hidden");
+        elements.legalModal.classList.add("flex");
+        document.body.classList.add("overflow-hidden");
+        elements.legalModalClose.focus();
+      }
+
+      function closeLegalModal() {
+        elements.legalModal.classList.add("hidden");
+        elements.legalModal.classList.remove("flex");
+        document.body.classList.remove("overflow-hidden");
+      }
+
+      function hasCookieConsent() {
+        try {
+          return window.localStorage.getItem(COOKIE_CONSENT_KEY) === "accepted";
+        } catch (error) {
+          return false;
+        }
+      }
+
+      function saveCookieConsent() {
+        try {
+          window.localStorage.setItem(COOKIE_CONSENT_KEY, "accepted");
+        } catch (error) {
+          // Consent still applies for the current session if local storage is unavailable.
+        }
+
+        elements.cookieConsentBanner.classList.add("hidden");
+      }
+
+      function setupLegalModals() {
+        document.addEventListener("click", (event) => {
+          const trigger = event.target.closest("[data-legal-modal]");
+
+          if (!trigger) {
+            return;
+          }
+
+          event.preventDefault();
+          openLegalModal(trigger.dataset.legalModal);
+        });
+
+        elements.legalModalBackdrop.addEventListener("click", closeLegalModal);
+        elements.legalModalClose.addEventListener("click", closeLegalModal);
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && !elements.legalModal.classList.contains("hidden")) {
+            closeLegalModal();
+          }
+        });
+      }
+
+      function setupCookieConsent() {
+        if (!hasCookieConsent()) {
+          elements.cookieConsentBanner.classList.remove("hidden");
+        }
+
+        elements.acceptCookiesButton.addEventListener("click", saveCookieConsent);
+      }
+
       function bindEvents() {
         elements.incomeRange.addEventListener("input", () => {
           elements.incomeInput.value = elements.incomeRange.value;
@@ -1438,6 +1728,8 @@
         elements.selfServiceBlueprintCta.addEventListener("click", openBlueprintReport);
         elements.printBlueprintTop.addEventListener("click", printBlueprintReport);
         elements.printBlueprintBottom.addEventListener("click", printBlueprintReport);
+        setupLegalModals();
+        setupCookieConsent();
       }
 
       function init() {
