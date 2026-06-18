@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://llctoscorpcalc-com.vercel.app/sitemap.xml
+Sitemap: https://llctoscorpcalc.com/sitemap.xml
