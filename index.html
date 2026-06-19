@@ -252,7 +252,7 @@
                       <strong class="font-black text-slate-700">Disclosure:</strong> We review and recommend essential tools to help you run your business. When you click our links to purchase services (such as business formation or payroll providers), we may earn a small commission at no additional cost to you. This financial support keeps our calculator tools 100% free. Read our full <a href="/affiliate-disclosure/" class="font-black text-emerald-700 underline decoration-emerald-300 underline-offset-4 transition hover:text-emerald-800">Affiliate Disclosure</a> page.
                     </div>
                     <p class="mt-3 text-sm font-semibold leading-6 text-slate-600 sm:text-base">
-                      This interactive tool is updated for 2026 and customized for all 50 US states. As a core part of our <strong class="font-black text-ink">100% Self-Service S-Corp Toolkit</strong>, it empowers self-employed professionals to instantly unlock local tax optimization. To seamlessly automate your corporate structuring and employee payroll, this toolkit guides you through industry-leading, self-service platforms like <strong class="font-black text-emerald-700">Bizee</strong> and <strong class="font-black text-sky-700">Gusto</strong>. Simply select your state from the 'State' dropdown menu below to get started.
+                      This interactive tool is updated for 2026 and customized for all 50 US states. As a core part of our <strong class="font-black text-ink">100% Self-Service S-Corp Toolkit</strong>, it empowers self-employed professionals to instantly unlock local tax optimization. To seamlessly automate your corporate structuring and employee payroll, this toolkit guides you through industry-leading, self-service platforms like <strong class="font-black text-emerald-700">Bizee</strong>, <strong class="font-black text-emerald-700">ZenBusiness</strong>, and <strong class="font-black text-sky-700">Gusto</strong>. Simply select your state from the 'State' dropdown menu below to get started.
                     </p>
                     <div class="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-black text-emerald-700 shadow-sm">
                       <span>Choose your state below</span>
@@ -546,12 +546,19 @@
             <p class="mt-2 text-sm leading-6 text-slate-600">No account, no scheduling, no human handoff. Estimate savings, read the AI blueprint, then choose your own next step.</p>
           </div>
 
-          <div class="grid gap-5 md:grid-cols-3">
+          <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             <a id="selfServiceBizeeCta" href="#" target="_blank" rel="noopener sponsored" class="rounded-lg border border-line bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-soft">
               <p class="text-sm font-bold uppercase tracking-wide text-emerald-600">Self-service formation</p>
               <h3 class="mt-3 text-lg font-black tracking-normal text-ink">Form Your S-Corp Automatically via Bizee</h3>
               <p class="mt-2 text-sm leading-6 text-slate-600">Start formation online with a $0 base fee offer and keep the process fully self-directed.</p>
               <span class="mt-5 inline-flex rounded-lg bg-ink px-4 py-2 text-sm font-bold text-white">$0 base fee</span>
+            </a>
+
+            <a id="selfServiceZenBusinessCta" href="#" target="_blank" rel="noopener sponsored" class="rounded-lg border border-line bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-soft">
+              <p class="text-sm font-bold uppercase tracking-wide text-emerald-600">Self-service formation</p>
+              <h3 class="mt-3 text-lg font-black tracking-normal text-ink">Form Your S-Corp via ZenBusiness</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600">Fast, tech-forward business formation with worry-free compliance and automated state filings.</p>
+              <span class="mt-5 inline-flex rounded-lg bg-ink px-4 py-2 text-sm font-bold text-white">Fast Formation</span>
             </a>
 
             <a id="selfServiceGustoCta" href="#" target="_blank" rel="noopener sponsored" class="rounded-lg border border-line bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-soft">
@@ -646,7 +653,7 @@
         </section>
         <section>
           <h4 class="font-black text-ink">Affiliate Links</h4>
-          <p class="mt-2">Some buttons may link to third-party self-service platforms such as Bizee or Gusto. We may receive compensation if you click a sponsored link or purchase through one of those platforms. Third-party websites have their own privacy policies and terms.</p>
+          <p class="mt-2">Some buttons may link to third-party self-service platforms such as Bizee, ZenBusiness, or Gusto. We may receive compensation if you click a sponsored link or purchase through one of those platforms. Third-party websites have their own privacy policies and terms.</p>
         </section>
         <section>
           <h4 class="font-black text-ink">Financial and Tax Disclaimer</h4>
@@ -731,6 +738,7 @@
       const DEFAULT_STATE_SLUG = "california";
       const ROUTE_PREFIX = "/s-corp-calculator/";
       const BIZEE_AFFILIATE_BASE = "https://www.bizee.com/";
+      const ZENBUSINESS_AFFILIATE_BASE = "https://www.zenbusiness.com/";
       const GUSTO_AFFILIATE_BASE = "https://gusto.com/r/s-corp-calculator";
 
       const stateTaxRules = {
@@ -1149,6 +1157,7 @@
         bottomBizeeCta: document.getElementById("bottomBizeeCta"),
         bottomGustoCta: document.getElementById("bottomGustoCta"),
         selfServiceBizeeCta: document.getElementById("selfServiceBizeeCta"),
+        selfServiceZenBusinessCta: document.getElementById("selfServiceZenBusinessCta"),
         selfServiceGustoCta: document.getElementById("selfServiceGustoCta"),
         selfServiceBlueprintCta: document.getElementById("selfServiceBlueprintCta"),
         legalModal: document.getElementById("legalModal"),
@@ -1305,6 +1314,7 @@
         const shouldShow = savings > 3000;
         elements.affiliateCta.classList.toggle("hidden", !shouldShow);
         const bizeeUrl = buildAffiliateUrl(BIZEE_AFFILIATE_BASE, stateRule, savings, "bizee_formation_cta");
+        const zenBusinessUrl = buildAffiliateUrl(ZENBUSINESS_AFFILIATE_BASE, stateRule, savings, "zenbusiness_formation_cta");
         const gustoUrl = buildAffiliateUrl(GUSTO_AFFILIATE_BASE, stateRule, savings, "gusto_payroll_cta");
 
         elements.bizeeCta.href = bizeeUrl;
@@ -1312,6 +1322,7 @@
         elements.bottomBizeeCta.href = bizeeUrl;
         elements.bottomGustoCta.href = gustoUrl;
         elements.selfServiceBizeeCta.href = bizeeUrl;
+        elements.selfServiceZenBusinessCta.href = zenBusinessUrl;
         elements.selfServiceGustoCta.href = gustoUrl;
 
         if (!shouldShow) {
