@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LLC to S-Corp Calculator | 2026 S-Corp Tax Savings Calculator</title>
+    <title>Complete 50-State S-Corp Tax Savings Calculator (Updated for 2026)</title>
     <meta name="application-name" content="LLC to S-Corp Calculator" />
     <meta name="apple-mobile-web-app-title" content="LLC to S-Corp Calculator" />
     <meta name="robots" content="index, follow" />
@@ -11,25 +11,25 @@
     <meta
       id="metaDescription"
       name="description"
-      content="Free 2026 LLC to S-Corp tax savings calculator with instant AI optimization guidance, 50-state rules, reasonable salary modeling, and no registration required."
+      content="Use LLC to S-Corp Calculator to estimate 2026 S-Corp tax savings across all 50 US states. Free instant AI guidance, no registration required, with federal self-employment tax, reasonable salary, and state-level S-Corp cost modeling."
     />
-    <link id="canonicalUrl" rel="canonical" href="https://llctoscorpcalc.com/s-corp-calculator/california" />
+    <link id="canonicalUrl" rel="canonical" href="https://llctoscorpcalc.com/" />
     <meta property="og:site_name" content="LLC to S-Corp Calculator" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
-    <meta id="ogTitle" property="og:title" content="LLC to S-Corp Calculator | 2026 S-Corp Tax Savings Calculator" />
+    <meta id="ogTitle" property="og:title" content="Complete 50-State S-Corp Tax Savings Calculator (Updated for 2026)" />
     <meta
       id="ogDescription"
       property="og:description"
-      content="Free 2026 LLC to S-Corp tax savings calculator with instant AI optimization guidance, 50-state rules, reasonable salary modeling, and no registration required."
+      content="Use LLC to S-Corp Calculator to estimate 2026 S-Corp tax savings across all 50 US states. Free instant AI guidance, no registration required, with federal self-employment tax, reasonable salary, and state-level S-Corp cost modeling."
     />
-    <meta id="ogUrl" property="og:url" content="https://llctoscorpcalc.com/s-corp-calculator/california" />
+    <meta id="ogUrl" property="og:url" content="https://llctoscorpcalc.com/" />
     <meta name="twitter:card" content="summary" />
-    <meta id="twitterTitle" name="twitter:title" content="LLC to S-Corp Calculator | 2026 S-Corp Tax Savings Calculator" />
+    <meta id="twitterTitle" name="twitter:title" content="Complete 50-State S-Corp Tax Savings Calculator (Updated for 2026)" />
     <meta
       id="twitterDescription"
       name="twitter:description"
-      content="Free 2026 LLC to S-Corp tax savings calculator with instant AI optimization guidance, 50-state rules, reasonable salary modeling, and no registration required."
+      content="Use LLC to S-Corp Calculator to estimate 2026 S-Corp tax savings across all 50 US states. Free instant AI guidance, no registration required, with federal self-employment tax, reasonable salary, and state-level S-Corp cost modeling."
     />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -221,15 +221,19 @@
       <section class="relative border-b border-line bg-white">
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(25,169,116,0.16),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.96),rgba(231,249,241,0.76))]"></div>
         <div class="relative mx-auto max-w-7xl px-5 py-10 sm:px-6 lg:px-8 lg:py-14">
-          <nav class="mb-12 flex items-center justify-between">
+          <nav class="mb-12 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-line pb-5">
             <a href="#" class="flex items-center gap-3" aria-label="S-Corp Tax Savings Calculator home">
               <span class="grid h-9 w-9 place-items-center rounded-lg bg-ink text-sm font-black text-white">S</span>
-              <span class="text-sm font-semibold tracking-wide text-slate-700">S-Corp Savings</span>
+              <span class="text-sm font-semibold tracking-wide text-slate-700">S-Corp Savings Center</span>
             </a>
-            <a
-              href="#ai-blueprint-report"
-              class="rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-emerald-200"
-            >
+            <div class="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-600">
+              <button type="button" data-legal-modal="article1" class="transition hover:text-emerald-700">Salary Guide</button>
+              <span class="text-slate-300">|</span>
+              <button type="button" data-legal-modal="article2" class="transition hover:text-emerald-700">Form 2553 Guide</button>
+              <span class="text-slate-300">|</span>
+              <button type="button" data-legal-modal="article3" class="transition hover:text-emerald-700">State Fees</button>
+            </div>
+            <a href="#ai-blueprint-report" class="rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-emerald-200">
               Free AI Blueprint
             </a>
           </nav>
@@ -262,7 +266,7 @@
                 </div>
               </div>
               <h2 id="pageTitle" class="mt-6 max-w-3xl text-xl font-bold leading-8 tracking-normal text-slate-700 sm:text-2xl">
-                California S-Corp Tax Savings Calculator (Updated for 2026)
+                Complete 50-State S-Corp Tax Savings Calculator (Updated for 2026)
               </h2>
               <p id="heroDescription" class="mt-3 max-w-2xl text-base leading-7 text-slate-600">
                 Instantly compare a sole proprietorship or single-member LLC against an S-Corp election using 2026 federal tax rules and state-specific S-Corp costs. No signup, no waiting, no sales call.
@@ -706,6 +710,69 @@
           </p>
         </section>
       </div>
+    </template>
+
+    <template id="salaryGuideContent">
+      <article class="space-y-5">
+        <section>
+          <h3 class="text-lg font-black tracking-normal text-ink">S-Corp Reasonable Salary Guide</h3>
+          <p class="mt-2">An S-Corp shareholder who performs services for the business generally must receive reasonable W-2 compensation before taking non-wage distributions. The salary should reflect the value of the work performed rather than an arbitrary percentage selected only to reduce payroll tax.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Factors to Document</h4>
+          <p class="mt-2">Consider duties, experience, hours worked, local market compensation, industry benchmarks, business profitability, and compensation paid to comparable employees. Keep written support such as salary surveys, job descriptions, time records, and board or shareholder resolutions.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Using the Calculator</h4>
+          <p class="mt-2">A preliminary modeling range of 40% to 60% of annual profit can help illustrate potential outcomes, but it is not an IRS safe harbor. A defensible salary may fall outside that range depending on the owner’s role and the economics of the business.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Payroll Compliance</h4>
+          <p class="mt-2">Once compensation is established, use a compliant payroll process for withholding, employer payroll taxes, quarterly filings, and the annual W-2. This guide is educational and does not replace individualized tax or legal advice.</p>
+        </section>
+      </article>
+    </template>
+
+    <template id="form2553GuideContent">
+      <article class="space-y-5">
+        <section>
+          <h3 class="text-lg font-black tracking-normal text-ink">IRS Form 2553 Election Guide</h3>
+          <p class="mt-2">Eligible corporations and LLCs generally use IRS Form 2553 to elect federal S-Corporation tax treatment. The election changes how the business is taxed; it does not create a new state-law entity or replace the company’s formation documents.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">General Timing Rule</h4>
+          <p class="mt-2">For a calendar-year business, Form 2553 is generally due no later than two months and 15 days after the beginning of the tax year the election should take effect. A newly formed business may use a different effective-date calculation based on when its first tax year begins.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Information Commonly Required</h4>
+          <p class="mt-2">The filing typically includes the entity’s legal name, EIN, address, requested effective date, tax year, shareholder information, and shareholder consent signatures. Confirm that the entity and its shareholders meet the federal S-Corp eligibility rules before filing.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Late Elections and State Filings</h4>
+          <p class="mt-2">Late-election relief may be available when specific IRS requirements are satisfied. Some states also require a separate S-Corp election, registration, or tax filing, so federal acceptance alone may not complete the state process.</p>
+        </section>
+      </article>
+    </template>
+
+    <template id="stateFeesGuideContent">
+      <article class="space-y-5">
+        <section>
+          <h3 class="text-lg font-black tracking-normal text-ink">S-Corp State Fees and Taxes</h3>
+          <p class="mt-2">State treatment varies significantly. An S-Corp may face annual reports, franchise taxes, minimum entity taxes, replacement taxes, gross-receipts taxes, payroll registrations, or separate state election requirements in addition to federal payroll obligations.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Examples Included in This Tool</h4>
+          <p class="mt-2">The calculator models notable rules such as California’s minimum franchise tax and income-based S-Corp tax, Illinois replacement tax, Kentucky LLET minimum, Rhode Island minimum tax, and Tennessee excise and franchise tax assumptions.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Threshold and Location Warnings</h4>
+          <p class="mt-2">Texas franchise tax can depend on total revenue thresholds, Washington applies business and occupation tax concepts, and New York City does not recognize the New York State S-Corp election in the same manner. Local taxes may therefore materially change an estimate.</p>
+        </section>
+        <section>
+          <h4 class="font-black text-ink">Verify Before Filing</h4>
+          <p class="mt-2">Fees, thresholds, forms, and due dates can change. Review current state revenue and secretary of state guidance before making an election or relying on a modeled annual cost.</p>
+        </section>
+      </article>
     </template>
 
     <script>
@@ -1182,6 +1249,18 @@
           title: "Contact Us",
           templateId: "contactContent",
         },
+        article1: {
+          title: "S-Corp Reasonable Salary Guide",
+          templateId: "salaryGuideContent",
+        },
+        article2: {
+          title: "IRS Form 2553 Guide",
+          templateId: "form2553GuideContent",
+        },
+        article3: {
+          title: "S-Corp State Fees Guide",
+          templateId: "stateFeesGuideContent",
+        },
       };
 
       function money(value) {
@@ -1209,7 +1288,8 @@
       }
 
       function getCanonicalPageUrl(stateRule) {
-        return `${SITE_URL}${ROUTE_PREFIX}${getSlugForStateRule(stateRule)}`;
+        const stateSlug = getStateSlugFromPath();
+        return stateSlug ? `${SITE_URL}${ROUTE_PREFIX}${getSlugForStateRule(stateRule)}` : `${SITE_URL}/`;
       }
 
       function getStateTaxRuleDescription(stateRule) {
@@ -1233,8 +1313,16 @@
       }
 
       function renderPageMetadata(stateRule) {
-        const title = `${stateRule.name} S-Corp Tax Savings Calculator (Updated for 2026)`;
-        const description = `Use ${SITE_NAME} to estimate 2026 S-Corp tax savings in ${stateRule.name}. Free instant AI guidance, no registration required, with federal self-employment tax, reasonable salary, and state-level S-Corp cost modeling.`;
+        const isSpecificStatePage = getStateSlugFromPath();
+
+        const title = isSpecificStatePage
+          ? `${stateRule.name} S-Corp Tax Savings Calculator (Updated for 2026)`
+          : `Complete 50-State S-Corp Tax Savings Calculator (Updated for 2026)`;
+
+        const description = isSpecificStatePage
+          ? `Use ${SITE_NAME} to estimate 2026 S-Corp tax savings in ${stateRule.name}. Free instant AI guidance, no registration required, with federal self-employment tax, reasonable salary, and state-level S-Corp cost modeling.`
+          : `Use ${SITE_NAME} to estimate 2026 S-Corp tax savings across all 50 US states. Free instant AI guidance, no registration required, with federal self-employment tax, reasonable salary, and state-level S-Corp cost modeling.`;
+
         const canonicalUrl = getCanonicalPageUrl(stateRule);
 
         document.title = title;
